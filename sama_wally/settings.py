@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'wallet',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +82,12 @@ DATABASES = {
     }
 }
 
-
+REST_FRAMEWORK = {
+    # since we have no auth/authorization
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ]
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
