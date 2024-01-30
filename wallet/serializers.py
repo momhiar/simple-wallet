@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from . import models as wallet_models
 from django.core.exceptions import ObjectDoesNotExist
 
+
 class BasicUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -30,3 +31,12 @@ class WalletSerializer(serializers.ModelSerializer):
         except ObjectDoesNotExist:
             raise serializers.ValidationError('user does not exists')
         return owner
+
+
+class WalletBasicSerializer(WalletSerializer):
+    class Meta:
+        model = wallet_models.Wallet
+        exclude = ['deleted', 'balance', 'wallet_name']
+
+    def save(self):
+        return
