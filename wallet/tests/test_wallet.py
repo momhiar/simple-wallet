@@ -1,3 +1,4 @@
+#Sorry, I was more busy than i could  write full coverage tests
 import pytest
 from .factories import UserFactory
 from wallet.models import Wallet
@@ -21,7 +22,6 @@ def test_wallet_soft_deletion(test_wallet):
     assert test_wallet.deleted is True
     assert Wallet.objects.filter(id=test_wallet.id).exists() is False
     
-@pytest.mark.skip(reason="no way of currently testing this")     
 @pytest.mark.django_db
 def test_user_wallet_created(client, user):
     wallet_data = {'wallet_name': 'test_wallet'}
@@ -31,7 +31,6 @@ def test_user_wallet_created(client, user):
     assert response.json().get('owner').get('first_name') == user.first_name
     assert response.json().get('balance') == 0
 
-@pytest.mark.skip(reason="no way of currently testing this") 
 @pytest.mark.django_db
 def test_user_wallet_list(client, user):
     url = f"/wallets/user-wallets/{user.id}"
