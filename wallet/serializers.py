@@ -64,3 +64,8 @@ class TransactionSerializer(serializers.ModelSerializer):
         except ObjectDoesNotExist:
             raise serializers.ValidationError('Invalid Wallet id')
         return wallet_obj
+
+class CreateTransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = wallet_models.Transaction
+        fields = ["from_wallet_id", "to_wallet_id", "amount", "reason"]

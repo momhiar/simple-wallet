@@ -3,6 +3,9 @@ from . import models
 from . import serializers
 from django.db.models import Q
 from abc import abstractmethod
+from rest_framework.response import Response
+from .managers import TransactionManager
+from django.db import transaction as db_transaction
 # SRP: each view only handles one action
 # OCP: different functionalities without modifying BaseWallet
 
@@ -42,3 +45,19 @@ class TransactionListAPIView(ListAPIView):
     def get_queryset(self):
         wallet = self.request.query_params.get('wallet')
         return models.Transaction.objects.filter(Q(from_wallet_id=wallet) | Q(to_wallet_id=wallet))
+
+
+
+class CreateTransactionAPIView(CreateAPIView):
+    serializer_class = serializers.CreateTransactionSerializer
+    queryset = models.Transaction.objects.all()
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        with db_transaction.atomic():
+            serializer.save()
+            transaction = TransactionManager(**serializer.data, serializer=serializer)
+            transaction.perform()
+        return Response(serializer.data, status=201)
+
