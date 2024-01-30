@@ -30,6 +30,7 @@ def test_user_wallet_created(client, user):
     assert response.status_code == 201
     assert response.json().get('owner').get('first_name') == user.first_name
     assert response.json().get('balance') == 0
+
 @pytest.mark.skip(reason="no way of currently testing this") 
 @pytest.mark.django_db
 def test_user_wallet_list(client, user):
