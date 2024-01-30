@@ -1,0 +1,117 @@
+info:
+  title: test
+  version: 1.0.0
+consumes:
+  - application/json
+produces:
+  - application/json
+swagger: '2.0'
+
+
+security: []
+
+paths:
+  /wallets/create-for-user/{user}:
+    post:
+      operationId: create wallet for user
+      summary: create wallet
+      responses:
+        201:
+          description: created
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/Wallet'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Wallet'
+        - name: user
+          in: path
+          required: true
+          description: user id you want to create wallet for
+          type: integer
+  /wallets/user-wallets/{user}:
+    get:
+      operationId: list user wallets
+      summary: List wallets
+      responses:
+        200:
+          description: OK
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: user id you want to get thier wallet list
+          type: integer    
+          
+  /wallets/{id}:
+    get:
+      operationId: retrieve wallet details by id
+      summary: retrieve wallet details
+      responses:
+        200:
+          description: OK
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: wallet id you want retrieve
+          type: integer        
+  /wallets/wallet-transactions1:
+   get:
+      operationId: get wallet transactions by wallet id in query parameters
+      summary: retrieve wallet details
+      responses:
+        200:
+          description: OK
+      parameters:
+        - name: wallet
+          in: query
+          required: true
+          description: wallet id you want retrieve (?wallet=id)
+          type: integer        
+  /wallets/perform-transaction:
+    post:
+      operationId: perform a fun transfer
+      summary: create a transaction
+      responses:
+        201:
+          description: created
+        400:
+          description: bad request
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Transaction'
+
+
+definitions:
+  Wallet:
+    type: object
+    properties:
+      wallet_name:
+        description: name of the Wallet
+        type: string
+  Transaction:
+    type: object
+    properties:
+     from_wallet_id:
+       description: wallet id you want transfer funds from
+       type: integer
+     to_wallet_id:
+        description: wallet id you want transfer fund to
+        type: integer
+     amount:
+        description: amount of fund you want transfer > 0
+        type: integer
+     reason:
+        description: reason of fun transfer (optional)
+        type: string
+    
+      
+       
