@@ -25,7 +25,7 @@ class Wallet(models.Model):
 class Transaction(models.Model):
     # we assume that base Currency is IRR 
     # and we do not want to add any other currency
-    amount = models.BigIntegerField()
+    amount = models.PositiveIntegerField()
     from_wallet_id = models.ForeignKey(Wallet, db_index=True, related_name='source_wallet', on_delete=models.CASCADE,)
     to_wallet_id = models.ForeignKey(Wallet, db_index=True, related_name='destintaion_wallet', on_delete=models.CASCADE)
     date_issued = models.DateTimeField(auto_now_add=True)
