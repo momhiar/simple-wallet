@@ -40,3 +40,27 @@ class WalletBasicSerializer(WalletSerializer):
 
     def save(self):
         return
+
+class TransactionSerializer(serializers.ModelSerializer):
+    from_wallet_id = WalletBasicSerializer()
+    to_wallet_id = WalletBasicSerializer()
+    transaction_type = serializers.SerializerMethodField()
+
+    class Meta:
+        model = wallet_models.Transaction
+        fields = '__all__'
+
+    def get_transaction_type(self, obj):
+        
+        wallet_object = self.get_wallet_object()
+        if (obj == wallet_object):
+            return 'outbound'
+        return 'inbound'
+    
+    def get_wallet_object(self):
+        wallet_id = self.context['request'].query_params.get('wallet')
+        try:
+            wallet_obj = wallet_models.Wallet.objects.get(id=wallet_id)
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError('Invalid Wallet id')
+        return wallet_obj
